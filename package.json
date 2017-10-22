@@ -1,0 +1,29 @@
+{
+  "name": "vue-crypto-viewer-server",
+  "version": "1.0.0",
+  "description": "Server for vue-crypto-viewer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marwolaethblack/vue-crypto-viewer-server.git"
+  },
+  "author": "Adnan Ünal <a.unal677@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marwolaethblack/vue-crypto-viewer-server/issues"
+  },
+  "homepage": "https://github.com/marwolaethblack/vue-crypto-viewer-server#readme",
+  "dependencies": {
+    "axios": "^0.17.0",
+    "compression": "^1.7.1",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}
