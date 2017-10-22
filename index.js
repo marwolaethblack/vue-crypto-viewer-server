@@ -9,7 +9,7 @@ var app = express();
 app.use(morgan('combined'));
 app.use(compression());
 
-app.get('/', function (req, res) {
+app.get('/api', function (req, res) {
     axios.get('https://coinbin.org/lbc')
         .then(function (response) {
             res.json(response.data);
@@ -20,6 +20,6 @@ app.get('/', function (req, res) {
 })
 
 
-app.listen(3000, function() {
-    console.log('Server is listening on localhost:3000');
+app.listen(3005, function() {
+    console.log('Server is listening on localhost:3005');
 })
