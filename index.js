@@ -9,13 +9,14 @@ var app = express();
 app.use(morgan('combined'));
 app.use(compression());
 
-app.get('/api', function (req, res) {
+
+app.get('/api/coins/top', function(req,res) {
     axios.get('https://api.coinmarketcap.com/v1/ticker/?limit=10')
         .then(function (response) {
             res.json(response.data);
         })
         .catch(function (error) {
-
+            console.log(error);
         });
 });
 
