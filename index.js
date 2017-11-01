@@ -36,6 +36,6 @@ app.get('/api/coins/:coin/history', function (req, res) {
         })
 });
 
-app.listen(3005, function() {
-    console.log('Server is listening on localhost:3005');
+app.listen(3110, function() {
+    console.log('Server is listening on localhost:3110');
 });
