@@ -37,9 +37,14 @@ app.get('/api/coins/:coin/history', function (req, res) {
     var currency = req.query.currency || 'USD';
     var type = req.query.type;
 
+    //Changes BCC coin to BCCOIN because of different symbols for different APIs
+    //Bitconnect has a symbol of BCC in the coinmarket cap API but in the cryptocompare API it has a symbol BCCOIN
+    coin = coin === 'BCC' ? "BCCOIN" : coin;
+
     switch(type) {
         case '24h': {
-            apiURL += `histohour?fsym=${coin}&tsym=${currency}&limit=24&e=${exchange}`;
+            apiURL += `histohour?fsym=${coin}&tsym=${currency}&limit=24&e=${exchange}`
+            break;
         }
 
         case 'month': {
@@ -59,6 +64,7 @@ app.get('/api/coins/:coin/history', function (req, res) {
 
         case 'all': {
             apiURL += `histoday?fsym=${coin}&tsym=${currency}&aggregate=30&e=${exchange}&allData=true`;
+            break;
         }
 
         default: {
@@ -66,7 +72,6 @@ app.get('/api/coins/:coin/history', function (req, res) {
             break;
         }
     }
-    console.log(apiURL);
 
     axios.get(apiURL)
         .then(function (response) {
