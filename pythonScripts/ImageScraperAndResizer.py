@@ -3,6 +3,7 @@ import json
 from PIL import Image
 import glob
 
+#Parses the api for all logos of crypto currencies resizes and compresses them to a new folder
 
 def imageScraper():
 	imgData = requests.get('https://www.cryptocompare.com/api/data/coinlist/').content;

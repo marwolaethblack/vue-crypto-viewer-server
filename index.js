@@ -3,11 +3,16 @@ var compression = require('compression');
 var morgan = require('morgan');
 var axios = require('axios');
 
+var coinIds = require('./coinIds.json');
+
+
 
 var app = express();
 app.use(compression());
 app.use(morgan('combined'));
 app.set('port', process.env.PORT || 3110);
+
+
 
 
 
@@ -80,6 +85,21 @@ app.get('/api/coins/:coin/history', function (req, res) {
         .catch(function (error) {
             console.log(error);
         })
+});
+
+app.get('/api/coins/:coin/details', function(req, res) {
+   var { coin } = req.params;
+   var id = coinIds[coin];
+   if(id) {
+       axios.get(`https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=${id}`)
+           .then(response => {
+               res.status(200).json(response.data)
+           })
+           .catch(error => {
+               console.log(error)
+           })
+   }
+
 });
 
 app.listen(app.get('port'), function() {
