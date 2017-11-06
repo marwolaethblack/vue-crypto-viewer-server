@@ -3,7 +3,8 @@ var compression = require('compression');
 var morgan = require('morgan');
 var axios = require('axios');
 
-var coinIds = require('./coinIds.json');
+var coinIds = require('./constants/coinIds.json');
+var coinSymbolToName = require('./constants/coinSymbols.json');
 
 
 
@@ -80,7 +81,9 @@ app.get('/api/coins/:coin/history', function (req, res) {
 
     axios.get(apiURL)
         .then(function (response) {
-            res.status(200).json(response.data);
+            var dataWithCoinName = response.data;
+            dataWithCoinName.CoinName = coinSymbolToName[coin];
+            res.status(200).json(dataWithCoinName);
         })
         .catch(function (error) {
             console.log(error);

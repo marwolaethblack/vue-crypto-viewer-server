@@ -1,7 +1,7 @@
 import requests
 import json
 
-#Gets all coins and their Ids from the api and parses them to a json file containing the coin symbol as key and its ID as value
+#Gets all coins and their symbols from the api, creates a json file where key: symbol, value: name
 
 def coinIdParser():
     x = {}
@@ -10,8 +10,8 @@ def coinIdParser():
     coinData = json.loads(coinData)
     coinIds = coinData['Data']
     for key, value in coinIds.items():
-        x[key] = value['Id']
-    with open('coinIds.json', 'w') as outfile:
+        x[key] = value['CoinName']
+    with open('coinSymbols.json', 'w') as outfile:
         json.dump(x, outfile)
 
 
