@@ -31,6 +31,7 @@ router.get('/api/coins/:coin/history', function (req, res) {
     //Changes BCC coin to BCCOIN because of different symbols for different APIs
     //Bitconnect has a symbol of BCC in the coinmarket cap API but in the cryptocompare API it has a symbol BCCOIN
     coin = coin === 'BCC' ? "BCCOIN" : coin;
+    coin = coin === 'MIOTA' ? 'IOT' : coin;
 
     switch(type) {
         case '24h': {
@@ -77,6 +78,7 @@ router.get('/api/coins/:coin/history', function (req, res) {
 
 router.get('/api/coins/:coin/details', function(req, res) {
     var { coin } = req.params;
+    coin = coin === "MIOTA" ? "IOT" : coin;
     var id = coinIds[coin];
     if(id) {
         axios.get(`https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=${id}`)
@@ -87,6 +89,8 @@ router.get('/api/coins/:coin/details', function(req, res) {
                 console.log(error)
             })
     }
+
+    res.status(404);
 
 });
 
