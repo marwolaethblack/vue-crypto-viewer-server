@@ -18,6 +18,18 @@ router.get('/api/coins/top', function(req,res) {
         });
 });
 
+router.get('/api/coins/all', function(req, res) {
+
+    axios.get('https://min-api.cryptocompare.com/data/all/coinlist')
+        .then(function(response) {
+          res.status(200).json(response.data.Data);
+        })
+        .catch(function(error) {
+           console.log(error);
+        });
+});
+
+
 
 
 router.get('/api/coins/:coin/history', function (req, res) {
@@ -82,10 +94,10 @@ router.get('/api/coins/:coin/details', function(req, res) {
     var id = coinIds[coin];
     if(id) {
         axios.get(`https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=${id}`)
-            .then(response => {
+            .then(function(response) {
                 res.status(200).json(response.data)
             })
-            .catch(error => {
+            .catch(function(error) {
                 console.log(error)
             })
     }
