@@ -5,28 +5,69 @@ var axios = require('axios');
 var coinIds = require('../constants/coinIds.json');
 var coinSymbolToName = require('../constants/coinSymbols.json');
 
+//Global variable to cache the result of the TopCoins route so it retrieves new data only once every 3 minutes
+var topCoins = {
+    coins: {},
+    date: Date.now()
+};
+
+//Route to fetch the top 10 coins or cryptocurrencies from the remote API
 router.get('/api/coins/top', function(req,res) {
 
-    var currency = req.query.currency || 'USD';
+    var areCoinsEmpty = !Object.keys(topCoins.coins).length;
+    var isDataOld = topCoins.date - Date.now() > 180000 ? true : false; //fetch new data from API every 3 minutes
 
-    axios.get(`https://api.coinmarketcap.com/v1/ticker/?limit=10&convert=${currency}`)
-        .then(function (response) {
-            res.status(200).json(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    if(areCoinsEmpty || isDataOld) {
+        var currency = req.query.currency || 'USD';
+
+        axios.get(`https://api.coinmarketcap.com/v1/ticker/?limit=10&convert=${currency}`)
+            .then(function (response) {
+
+                topCoins.coins = response.data;
+                topCoins.date = Date.now();
+
+                res.status(200).json(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    } else {
+        res.status(200).json(topCoins.coins);
+    }
+
 });
 
+
+
+//Global variable to cache the result of the AllCoins route so it retrieves new data only once every hour
+var allCoins = {
+    coins: {},
+    date: Date.now(),
+};
+
+//Route to fetch the list of all known coins or cryptocurrencies from remote API
 router.get('/api/coins/all', function(req, res) {
 
-    axios.get('https://min-api.cryptocompare.com/data/all/coinlist')
-        .then(function(response) {
-          res.status(200).json(response.data.Data);
-        })
-        .catch(function(error) {
-           console.log(error);
-        });
+    var areCoinsEmpty = !Object.keys(allCoins.coins).length;
+    var isDataOld = allCoins.date - Date.now() > 3600000 ? true : false; //fetch new data from API every hour only
+
+    if( areCoinsEmpty || isDataOld ) {
+        axios.get('https://min-api.cryptocompare.com/data/all/coinlist')
+            .then(function(response) {
+
+                allCoins.coins = response.data.Data;
+                allCoins.date = Date.now();
+
+                res.status(200).json(response.data.Data);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    } else {
+        res.status(200).json(allCoins.coins);
+    }
+
+
 });
 
 
