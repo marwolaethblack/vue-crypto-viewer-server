@@ -5,6 +5,8 @@ var axios = require('axios');
 var coinIds = require('../constants/coinIds.json');
 var coinSymbolToName = require('../constants/coinSymbols.json');
 
+var paginateCoins = require('../helpers/paginateCoins');
+
 //Global variable to cache the result of the TopCoins route so it retrieves new data only once every 3 minutes
 var topCoins = {
     coins: {},
@@ -62,10 +64,12 @@ router.get('/api/coins/all', function(req, res) {
         axios.get('https://min-api.cryptocompare.com/data/all/coinlist')
             .then(function(response) {
 
-                allCoins.coins = response.data.Data;
+                var paginatedCoins = paginateCoins(response.data.Data);
+
+                allCoins.coins = paginatedCoins;
                 allCoins.date = Date.now();
 
-                res.status(200).json(response.data.Data);
+                res.status(200).json(paginatedCoins);
             })
             .catch(function(error) {
                 console.log(error);
