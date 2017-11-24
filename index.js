@@ -13,7 +13,7 @@ app.use(morgan('combined'));
 app.set('port', process.env.PORT || 3110);
 app.use(routes);
 
-//For production testing
+// //For production testing
 // app.use(express.static(__dirname + "/dist")); //serves css files
 //
 // app.get('*', function(req,res) {

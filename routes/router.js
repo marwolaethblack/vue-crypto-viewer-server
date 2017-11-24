@@ -8,23 +8,30 @@ var coinSymbolToName = require('../constants/coinSymbols.json');
 //Global variable to cache the result of the TopCoins route so it retrieves new data only once every 3 minutes
 var topCoins = {
     coins: {},
-    date: Date.now()
+    date: Date.now(),
+    prevCurrency: "USD"
 };
+
+
 
 //Route to fetch the top 10 coins or cryptocurrencies from the remote API
 router.get('/api/coins/top', function(req,res) {
 
     var areCoinsEmpty = !Object.keys(topCoins.coins).length;
     var isDataOld = topCoins.date - Date.now() > 180000 ? true : false; //fetch new data from API every 3 minutes
+    var isCurrencyNew = topCoins.prevCurrency != req.query.currency;
 
-    if(areCoinsEmpty || isDataOld) {
+
+
+    if(areCoinsEmpty || isDataOld || isCurrencyNew) {
+
         var currency = req.query.currency || 'USD';
 
         axios.get(`https://api.coinmarketcap.com/v1/ticker/?limit=10&convert=${currency}`)
             .then(function (response) {
-
                 topCoins.coins = response.data;
                 topCoins.date = Date.now();
+                topCoins.prevCurrency = currency;
 
                 res.status(200).json(response.data);
             })
