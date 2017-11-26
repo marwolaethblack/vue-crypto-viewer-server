@@ -158,4 +158,8 @@ router.get('/api/coins/:coin/details', function(req, res) {
 
 });
 
+router.get('*', function(req,res) {
+    res.render('./dist/index.html');
+});
+
 module.exports = router;
