@@ -17,7 +17,7 @@ var topCoins = {
 
 
 //Route to fetch the top 10 coins or cryptocurrencies from the remote API
-router.get('/api/coins/top', function(req,res) {
+router.get('api/coins/top', function(req,res) {
 
     var areCoinsEmpty = !Object.keys(topCoins.coins).length;
     var isDataOld = topCoins.date - Date.now() > 180000 ? true : false; //fetch new data from API every 3 minutes
@@ -55,7 +55,7 @@ var allCoins = {
 };
 
 //Route to fetch the list of all known coins or cryptocurrencies from remote API
-router.get('/api/coins/all', function(req, res) {
+router.get('api/coins/all', function(req, res) {
 
     var areCoinsEmpty = !Object.keys(allCoins.coins).length;
     var isDataOld = allCoins.date - Date.now() > 3600000 ? true : false; //fetch new data from API every hour only
@@ -84,7 +84,7 @@ router.get('/api/coins/all', function(req, res) {
 
 
 
-router.get('/api/coins/:coin/history', function (req, res) {
+router.get('api/coins/:coin/history', function (req, res) {
 
     var apiURL = 'https://min-api.cryptocompare.com/data/';
     var coin = req.params.coin || 'BTC';
@@ -140,7 +140,7 @@ router.get('/api/coins/:coin/history', function (req, res) {
         })
 });
 
-router.get('/api/coins/:coin/details', function(req, res) {
+router.get('api/coins/:coin/details', function(req, res) {
     var { coin } = req.params;
     coin = coin === "MIOTA" ? "IOT" : coin;
     var id = coinIds[coin];
