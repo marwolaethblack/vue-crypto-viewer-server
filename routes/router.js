@@ -39,7 +39,8 @@ router.get('/api/coins/top', function(req,res) {
                 res.status(200).json(response.data);
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.request);
+                res.status(502);
             });
     } else {
         res.status(200).json(topCoins.coins);
@@ -74,6 +75,7 @@ router.get('/api/coins/all', function(req, res) {
             })
             .catch(function(error) {
                 console.log(error);
+                res.status(502);
             });
     } else {
         res.status(200).json(allCoins.coins);
@@ -151,7 +153,8 @@ router.get('/api/coins/:coin/details', function(req, res) {
                 res.status(200).json(response.data)
             })
             .catch(function(error) {
-                console.log(error)
+                console.log(error);
+                res.status(502);
             })
     }
 
