@@ -158,4 +158,19 @@ router.get('/api/coins/:coin/details', function(req, res) {
 
 });
 
+router.get('/api/:coin/social', function(req, res) {
+   var { coin } = req.params;
+   coin = coin === "MIOTA" ? "IOT" : coin;
+   var id = coinIds[coin];
+
+   axios.get(`https://www.cryptocompare.com/api/data/socialstats/?id=${id}`)
+       .then(function(response) {
+           res.status(200).json(response.data);
+       })
+       .catch(function(errror) {
+
+       })
+
+});
+
 module.exports = router;
