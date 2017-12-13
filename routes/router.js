@@ -38,14 +38,14 @@ router.get('/api/coins/top', function(req,res) {
                 res.status(200).json(response.data);
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.request);
+                res.status(502);
             });
     } else {
         res.status(200).json(topCoins.coins);
     }
 
 });
-
 
 
 //Global variable to cache the result of the AllCoins route so it retrieves new data only once every hour
@@ -73,6 +73,7 @@ router.get('/api/coins/all', function(req, res) {
             })
             .catch(function(error) {
                 console.log(error);
+                res.status(502);
             });
     } else {
         res.status(200).json(allCoins.coins);
@@ -137,6 +138,7 @@ router.get('/api/coins/:coin/history', function (req, res) {
         })
         .catch(function (error) {
             console.log(error);
+            res.status(502);
         })
 });
 
@@ -150,13 +152,18 @@ router.get('/api/coins/:coin/details', function(req, res) {
                 res.status(200).json(response.data)
             })
             .catch(function(error) {
-                console.log(error)
+                console.log(error);
+                res.status(502);
             })
     }
 
     res.status(404);
 
 });
+
+
+
+
 
 router.get('/api/:coin/social', function(req, res) {
    var { coin } = req.params;
@@ -167,10 +174,13 @@ router.get('/api/:coin/social', function(req, res) {
        .then(function(response) {
            res.status(200).json(response.data);
        })
-       .catch(function(errror) {
-
+       .catch(function(error) {
+           console.log(error);
+           res.status(504);
        })
 
 });
 
 module.exports = router;
+
+
