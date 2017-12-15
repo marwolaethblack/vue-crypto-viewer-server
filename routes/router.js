@@ -39,7 +39,7 @@ router.get('/api/coins/top', function(req,res) {
             })
             .catch(function (error) {
                 console.log(error.request);
-                res.status(502);
+                res.status(502).json({Response: "Error", Message: "The server encountered an error"});
             });
     } else {
         res.status(200).json(topCoins.coins);
@@ -73,7 +73,7 @@ router.get('/api/coins/all', function(req, res) {
             })
             .catch(function(error) {
                 console.log(error);
-                res.status(502);
+                res.status(502).json({Response: "Error", Message: "The server encountered an error"});
             });
     } else {
         res.status(200).json(allCoins.coins);
@@ -138,7 +138,7 @@ router.get('/api/coins/:coin/history', function (req, res) {
         })
         .catch(function (error) {
             console.log(error);
-            res.status(502);
+            res.status(502).json({Response: "Error", Message: "The server encountered an error"});
         })
 });
 
@@ -153,11 +153,12 @@ router.get('/api/coins/:coin/details', function(req, res) {
             })
             .catch(function(error) {
                 console.log(error);
-                res.status(502);
+                res.status(502).json({Response: "Error", Message: "The server encountered an error"});
             })
+    } else {
+        res.status(404).json({Response: "Error", Message: "The requested coin was not found"});
     }
 
-    res.status(404);
 
 });
 
