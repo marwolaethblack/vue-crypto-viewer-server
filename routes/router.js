@@ -166,7 +166,7 @@ router.get('/api/coins/:coin/details', function(req, res) {
 
 
 
-router.get('/api/:coin/social', function(req, res) {
+router.get('/api/coins/:coin/social', function(req, res) {
    var { coin } = req.params;
    coin = coin === "MIOTA" ? "IOT" : coin;
    var id = coinIds[coin];
