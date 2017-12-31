@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var path = require("path");
+var path = require('path');
 
 var coinIds = require('../constants/coinIds.json');
 var coinSymbolToName = require('../constants/coinSymbols.json');
@@ -40,14 +40,13 @@ router.get('/api/coins/top', function(req,res) {
             })
             .catch(function (error) {
                 console.log(error.request);
-                res.status(502);
+                res.status(502).json({Response: "Error", Message: "The server encountered an error"});
             });
     } else {
         res.status(200).json(topCoins.coins);
     }
 
 });
-
 
 
 //Global variable to cache the result of the AllCoins route so it retrieves new data only once every hour
@@ -75,7 +74,7 @@ router.get('/api/coins/all', function(req, res) {
             })
             .catch(function(error) {
                 console.log(error);
-                res.status(502);
+                res.status(502).json({Response: "Error", Message: "The server encountered an error"});
             });
     } else {
         res.status(200).json(allCoins.coins);
@@ -140,6 +139,7 @@ router.get('/api/coins/:coin/history', function (req, res) {
         })
         .catch(function (error) {
             console.log(error);
+            res.status(502).json({Response: "Error", Message: "The server encountered an error"});
         })
 });
 
@@ -154,13 +154,33 @@ router.get('/api/coins/:coin/details', function(req, res) {
             })
             .catch(function(error) {
                 console.log(error);
-                res.status(502);
+                res.status(502).json({Response: "Error", Message: "The server encountered an error"});
             })
+    } else {
+        res.status(404).json({Response: "Error", Message: "The requested coin was not found"});
     }
 
-    res.status(404);
 
 });
+
+
+
+router.get('/api/coins/:coin/social', function(req, res) {
+    var { coin } = req.params;
+    coin = coin === "MIOTA" ? "IOT" : coin;
+    var id = coinIds[coin];
+
+    axios.get(`https://www.cryptocompare.com/api/data/socialstats/?id=${id}`)
+        .then(function(response) {
+            res.status(200).json(response.data);
+        })
+        .catch(function(error) {
+            console.log(error);
+            res.status(504);
+        })
+
+});
+
 
 router.get('/*', function(req,res) {
     res.sendFile(path.join(__dirname, '..', 'dist/index.html'));
