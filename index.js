@@ -10,7 +10,7 @@ var routes = require('./routes/router');
 var app = express();
 app.use(compression());
 app.use(morgan('combined'));
-app.set('port', process.env.PORT || 3110);
+app.set('port', 3110);
 app.use(routes);
 
 

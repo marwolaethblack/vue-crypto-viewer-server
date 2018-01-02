@@ -103,6 +103,16 @@ router.get('/api/coins/:coin/history', function (req, res) {
             apiURL += `histohour?fsym=${coin}&tsym=${currency}&limit=24&e=${exchange}`
             break;
         }
+        
+        case 'week': {
+            apiURL += `histoday?fsym=${coin}&tsym=${currency}&limit=7&e=${exchange}`;
+            break;
+        }
+        
+        case '2weeks': {
+            apiURL += `histoday?fsym=${coin}&tsym=${currency}&limit=14&e=${exchange}`;
+            break;
+        }
 
         case 'month': {
             apiURL += `histoday?fsym=${coin}&tsym=${currency}&limit=30&e=${exchange}`;
